@@ -1,0 +1,9 @@
+#shulteTable{
+    width: 360px;
+    height: 360px;
+}
+
+#shulteTable td {
+    text-align: center;
+    vertical-align: middle;
+}
