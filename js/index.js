@@ -4,18 +4,18 @@ window.addEventListener('load', function () {
         count = 5,//parseInt(prompt("Count")),
         content = "",
         numbers = [],
-        n1, n2;
+        n1, n2, square=count*count;
 
-    for (let n = 0; n < count * count; n++) {
+    for (let n = 0; n < square; n++) {
         numbers[n] = n + 1;
     }
     // change zero-element
-    n1 = getN1(n1, count);
+    n1 = getN1(n1);
     n2 = 0;
     changeValue(n1, n2);
     //
     for (let n = 0; n < count * (count - 1); n++) {
-        n1 = getN1(n1, count);
+        n1 = getN1(n1);
         n2 = getN2(n1);
         changeValue(n1, n2);
     }
@@ -30,9 +30,9 @@ window.addEventListener('load', function () {
         content += "</tr>";
     }
     function getN2(n1) {
-        let t = Math.ceil(Math.random() * count * count);
-        while (t === n1 || t === 25) {
-            t = Math.ceil(Math.random() * count * count);
+        let t = Math.ceil(Math.random() *square);
+        while (t === n1 || t === square) {
+            t = Math.ceil(Math.random() * square);
         }
         return (t);
     }
@@ -42,10 +42,10 @@ window.addEventListener('load', function () {
         numbers[n1] = numbers[n2];
         numbers[n2] = t;
     }
-    function getN1(n1, count) {
-        n1 = Math.ceil(Math.random() * count * count);
-        while (n1 === 25) {
-            n1 = Math.ceil(Math.random() * count * count);
+    function getN1(n1) {
+        n1 = Math.ceil(Math.random() * square);
+        while (n1 === square) {
+            n1 = Math.ceil(Math.random() * square);
         }
         return n1;
     }
