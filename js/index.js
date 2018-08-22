@@ -2,21 +2,25 @@ window.addEventListener('load', function () {
 
     let table = document.getElementById("shulteTable"),
         count = 5,//parseInt(prompt("Count")),
+        inputSec = document.getElementById("seconds"),
         content = "",
         numbers = [],
-        n1, n2, square=count*count;
+        time = 0,
+        flag=0,
+        n1, n2, square = count * count;
 
     for (let n = 0; n < square; n++) {
         numbers[n] = n + 1;
     }
+    var stopBtn = {}
     // change zero-element
-    n1 = getN1(n1);
-    n2 = 0;
+    n1 = 0;
+    n2 = getN(n1);
     changeValue(n1, n2);
     //
     for (let n = 0; n < count * (count - 1); n++) {
-        n1 = getN1(n1);
-        n2 = getN2(n1);
+        n1 = getN(n1);
+        n2 = getN(n1);
         changeValue(n1, n2);
     }
 
@@ -29,8 +33,8 @@ window.addEventListener('load', function () {
 
         content += "</tr>";
     }
-    function getN2(n1) {
-        let t = Math.ceil(Math.random() *square);
+    function getN(n1 = -1) {
+        let t = Math.ceil(Math.random() * square);
         while (t === n1 || t === square) {
             t = Math.ceil(Math.random() * square);
         }
@@ -42,12 +46,19 @@ window.addEventListener('load', function () {
         numbers[n1] = numbers[n2];
         numbers[n2] = t;
     }
-    function getN1(n1) {
-        n1 = Math.ceil(Math.random() * square);
-        while (n1 === square) {
-            n1 = Math.ceil(Math.random() * square);
-        }
-        return n1;
-    }
+    inputSec.innerHTML='0.0';
+    var stopWtch;// = setInterval(function () { time++; inputSec.innerHTML = time / 10 }, 100);
+
     table.innerHTML = content;
+    document.getElementsByTagName("body")[0].addEventListener('keydown', function () {
+        if (event.keyCode === 32 && flag===1) {
+            clearInterval(stopWtch);
+            flag=0;
+        }
+        if (event.keyCode !== 32 && flag===0) {
+            time=0;
+            flag=1;
+            stopWtch = setInterval(function () { time++; inputSec.innerHTML = Math.trunc(time / 10)+'.'+time%10 }, 100);
+        }
+    });
 }, false);
