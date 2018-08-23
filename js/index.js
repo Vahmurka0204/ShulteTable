@@ -2,37 +2,20 @@ window.addEventListener('load', function () {
 
     let table = document.getElementById("shulteTable"),
         count = 5,//parseInt(prompt("Count")),
-        inputSec = document.getElementById("seconds"),
-        content = "",
-        numbers = [],
+        stopWatch = document.getElementById("stpwtch"),
+        content,
+        matrixElements = [],
         time = 0,
-        flag=0,
-        n1, n2, square = count * count;
+        isStpWtchOn = 0,
+        n1, n2;
+    const square = count * count;
+    var stopWtch;
 
     for (let n = 0; n < square; n++) {
-        numbers[n] = n + 1;
+        matrixElements[n] = n + 1;
     }
-    var stopBtn = {}
-    // change zero-element
-    n1 = 0;
-    n2 = getN(n1);
-    changeValue(n1, n2);
-    //
-    for (let n = 0; n < count * (count - 1); n++) {
-        n1 = getN(n1);
-        n2 = getN(n1);
-        changeValue(n1, n2);
-    }
-
-    for (let i = 0; i < count; i++) {
-        content += "<tr>";
-
-        for (let j = 0; j < count; j++) {
-            content += `<td>${numbers[i * count + j]}</td>`;
-        }
-
-        content += "</tr>";
-    }
+    fillTable();
+    stopWatch.innerHTML = '0.0';
     function getN(n1 = -1) {
         let t = Math.ceil(Math.random() * square);
         while (t === n1 || t === square) {
@@ -42,23 +25,43 @@ window.addEventListener('load', function () {
     }
     function changeValue(n1, n2) {
         let t;
-        t = numbers[n1];
-        numbers[n1] = numbers[n2];
-        numbers[n2] = t;
+        t = matrixElements[n1];
+        matrixElements[n1] = matrixElements[n2];
+        matrixElements[n2] = t;
     }
-    inputSec.innerHTML='0.0';
-    var stopWtch;// = setInterval(function () { time++; inputSec.innerHTML = time / 10 }, 100);
-
-    table.innerHTML = content;
-    document.getElementsByTagName("body")[0].addEventListener('keydown', function () {
-        if (event.keyCode === 32 && flag===1) {
-            clearInterval(stopWtch);
-            flag=0;
+    function fillTable() {
+        content = "";
+        for (let i = 0; i < count; i++) {
+            content += "<tr>";
+            for (let j = 0; j < count; j++) {
+                content += `<td>${matrixElements[i * count + j]}</td>`;
+            }
+            content += "</tr>";
+            table.innerHTML = content;
         }
-        if (event.keyCode !== 32 && flag===0) {
-            time=0;
-            flag=1;
-            stopWtch = setInterval(function () { time++; inputSec.innerHTML = Math.trunc(time / 10)+'.'+time%10 }, 100);
+    }
+    document.getElementsByTagName("body")[0].addEventListener('keydown', function () {
+        if (event.keyCode === 32 && isStpWtchOn === 1) {
+            clearInterval(stopWtch);
+            isStpWtchOn = 0;
+        }
+        if (event.keyCode !== 32 && isStpWtchOn === 0) {
+            time = 0;
+            isStpWtchOn = 1;
+            // change zero-element
+            n1 = 0;
+            n2 = getN(n1);
+            changeValue(n1, n2);
+            //
+            for (let n = 0; n < count * (count - 1); n++) {
+                n1 = getN(n1);
+                n2 = getN(n1);
+                changeValue(n1, n2);
+            }
+            fillTable();
+            stopWtch = setInterval(function () { time++; stopWatch.innerHTML = Math.trunc(time / 10) + '.' + time % 10 }, 100);
         }
     });
 }, false);
+
+
